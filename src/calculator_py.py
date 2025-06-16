@@ -1,78 +1,88 @@
+import tkinter as tk
+from tkinter import messagebox
 import math
 
-def add(x, y):
-    """Add two numbers."""
-    return x + y
+# Calculator functions
+def add():
+    try:
+        result.set(float(entry1.get()) + float(entry2.get()))
+    except ValueError:
+        show_error()
 
-def subtract(x, y):
-    """Subtract two numbers."""
-    return x - y
+def subtract():
+    try:
+        result.set(float(entry1.get()) - float(entry2.get()))
+    except ValueError:
+        show_error()
 
-def multiply(x, y):
-    """Multiply two numbers."""
-    return x * y
+def multiply():
+    try:
+        result.set(float(entry1.get()) * float(entry2.get()))
+    except ValueError:
+        show_error()
 
-def divide(x, y):
-    """Divide two numbers."""
-    if y == 0:
-        raise ValueError("Cannot divide by zero.")
-    return x / y
+def divide():
+    try:
+        y = float(entry2.get())
+        if y == 0:
+            raise ValueError("Cannot divide by zero.")
+        result.set(float(entry1.get()) / y)
+    except ValueError as e:
+        show_error(str(e))
 
-def power(x, y):
-    """Raise x to the power of y."""
-    return x ** y
+def power():
+    try:
+        result.set(float(entry1.get()) ** float(entry2.get()))
+    except ValueError:
+        show_error()
 
-def square_root(x):
-    """Return the square root of x."""
-    if x < 0:
-        raise ValueError("Cannot take the square root of a negative number.")
-    return math.sqrt(x)
+def square_root():
+    try:
+        x = float(entry1.get())
+        if x < 0:
+            raise ValueError("Cannot take the square root of a negative number.")
+        result.set(math.sqrt(x))
+    except ValueError as e:
+        show_error(str(e))
 
-def percentage(x, total):
-    """Calculate the percentage of x with respect to total."""
-    if total == 0:
-        raise ValueError("Total cannot be zero.")
-    return (x / total) * 100
+def percentage():
+    try:
+        total = float(entry2.get())
+        if total == 0:
+            raise ValueError("Total cannot be zero.")
+        result.set((float(entry1.get()) / total) * 100)
+    except ValueError as e:
+        show_error(str(e))
 
-def main():
-    print("====Simple Calculator====\n")
-    print("Select an operation:")
-    print("1. Add")
-    print("2. Subtract")
-    print("3. Multiply")
-    print("4. Divide")
-    print("5. Power")
-    print("6. Square Root")
-    print("7. Percentage")
+def show_error(msg="Please enter valid numbers."):
+    messagebox.showerror("Error", msg)
 
-    choice = input("Select operation (1-7): ")
+# GUI setup
+root = tk.Tk()
+root.title("Simple Calculator")
 
-    if choice in ['1', '2', '3', '4', '5']:
-        x = float(input("Enter first number: "))
-        y = float(input("Enter second number: "))
-        if choice == '1':
-            print(f"Result: {add(x, y)}")
-        elif choice == '2':
-            print(f"Result: {subtract(x, y)}")
-        elif choice == '3':
-            print(f"Result: {multiply(x, y)}")
-        elif choice == '4':
-            print(f"Result: {divide(x, y)}")
-        elif choice == '5':
-            print(f"Result: {power(x, y)}")
+# Entry fields
+tk.Label(root, text="First Number / Value:").grid(row=0, column=0, sticky="w")
+entry1 = tk.Entry(root)
+entry1.grid(row=0, column=1)
 
-    elif choice == '6':
-        x = float(input("Enter number to find square root: "))
-        print(f"Result: {square_root(x)}")
+tk.Label(root, text="Second Number / Total:").grid(row=1, column=0, sticky="w")
+entry2 = tk.Entry(root)
+entry2.grid(row=1, column=1)
 
-    elif choice == '7':
-        x = float(input("Enter the part value: "))
-        total = float(input("Enter the total value: "))
-        print(f"Result: {percentage(x, total)}%")
+# Result display
+result = tk.StringVar()
+tk.Label(root, text="Result:").grid(row=2, column=0, sticky="w")
+tk.Label(root, textvariable=result).grid(row=2, column=1, sticky="w")
 
-    else:
-        print("Invalid operation selected.")
+# Buttons
+tk.Button(root, text="Add", command=add).grid(row=3, column=0)
+tk.Button(root, text="Subtract", command=subtract).grid(row=3, column=1)
+tk.Button(root, text="Multiply", command=multiply).grid(row=4, column=0)
+tk.Button(root, text="Divide", command=divide).grid(row=4, column=1)
+tk.Button(root, text="Power", command=power).grid(row=5, column=0)
+tk.Button(root, text="Square Root", command=square_root).grid(row=5, column=1)
+tk.Button(root, text="Percentage", command=percentage).grid(row=6, column=0)
 
-if __name__ == "__main__":
-    main()
-
+# Run the application
+root.mainloop()
