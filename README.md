@@ -1,4 +1,4 @@
-# calcul8
+# Calcul8.py
 
 A simple calculator app built with Python and Tkinter. It allows you to perform basic operations (+, -, *, /, %, power, square root) on two numbers.
 
